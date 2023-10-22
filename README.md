@@ -1,23 +1,25 @@
 # Test
 
-## DontSendMeNFT
-
-step 1.
+## step 1.
 
 ```
 $ git clone https://github.com/HaoHaoLifeHack/DontSendMeNFT.git
 ```
 
-step 2.
+## step 2.
 
 ```
 $ forge install
 ```
 
-step 3.
+## step 3.
 
 ```
 $ forge test --mc DontSendMeNFTTest -vvvvv
 ```
 
-## BlindBox
+## step 4.
+
+```
+$ forge test --mc BlindBoxTest -vvvvv
+```
