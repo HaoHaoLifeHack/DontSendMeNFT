@@ -13,12 +13,11 @@ contract DontSendMeNFTTest is Test {
     uint256 mintedAmount;
 
     address user1 = makeAddr("Alice");
-    address user2 = makeAddr("Bob");
 
     function setUp() public {
-        noUseful = new NoUseful();
-        nftReceiver = new NFTReceiver(address(myNFT), address(noUseful));
         myNFT = new MyNFT();
+        noUseful = new NoUseful();
+        nftReceiver = new NFTReceiver(address(noUseful));
         mintedAmount = 0;
     }
 
@@ -56,17 +55,18 @@ contract DontSendMeNFTTest is Test {
     }
 
     function testNFTReceiver() public {
-        uint256 tokenId = 1;
+        uint256 tokenId = 0;
 
         vm.startPrank(user1);
-        // 如果是 NoUseful 這個 NFT 的話，Receiver 可以接收
+        // if it's NoUseful NFT，Receiver可以接收
         noUseful.mint(user1, tokenId);
         noUseful.safeTransferFrom(user1, address(nftReceiver), tokenId);
         assertEq(noUseful.ownerOf(tokenId), address(nftReceiver));
         assertEq(noUseful.balanceOf(address(nftReceiver)), 1);
 
-        // 如果是收到其他 NFT 的話要退還，所以最後的 owner 還是 user1 自己並且 receiver 不會有 MyNFT 的 balance
-        myNFT.safeTransferFrom(user1, address(nftReceiver), tokenId); //safeTransferFrom()
+        // if 收到其他 NFT 的話要退還，所以最後的 owner 還是 user1 自己並且 receiver 不會有 MyNFT 的 balance
+        myNFT.mint(user1, tokenId);
+        myNFT.safeTransferFrom(user1, address(nftReceiver), tokenId); //safeTransferFrom(address from, address to, uint256 tokenId)
         assertEq(myNFT.ownerOf(tokenId), address(user1));
         assertEq(myNFT.balanceOf(address(nftReceiver)), 0);
 
