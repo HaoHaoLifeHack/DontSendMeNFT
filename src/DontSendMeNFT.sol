@@ -46,7 +46,7 @@ contract NFTReceiver is IERC721Receiver {
 
     constructor(address _noUseful) {
         noUseful = NoUseful(_noUseful);
-        mintedAmount = 0;
+        mintedAmount = 1;
     }
 
     function onERC721Received(
@@ -61,13 +61,13 @@ contract NFTReceiver is IERC721Receiver {
 
             IERC721(msg.sender).safeTransferFrom( //safeTransferFrom(address from, address to, uint256 tokenId)
                 address(this),
-                msg.sender,
+                operator,
                 tokenId,
                 data
             );
             // 3. and also mint your NoUseful to the original owner.
             uint256 newTokenId = mintedAmount;
-            noUseful.mint(msg.sender, newTokenId);
+            noUseful.mint(operator, newTokenId);
             mintedAmount++;
         }
 

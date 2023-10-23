@@ -66,6 +66,8 @@ contract DontSendMeNFTTest is Test {
 
         // if 收到其他 NFT 的話要退還，所以最後的 owner 還是 user1 自己並且 receiver 不會有 MyNFT 的 balance
         myNFT.mint(user1, tokenId);
+
+        //TODO: 討論這一行的錯誤 “ERC721InvalidReceiver”
         myNFT.safeTransferFrom(user1, address(nftReceiver), tokenId); //safeTransferFrom(address from, address to, uint256 tokenId)
         assertEq(myNFT.ownerOf(tokenId), address(user1));
         assertEq(myNFT.balanceOf(address(nftReceiver)), 0);
